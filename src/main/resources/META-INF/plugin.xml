@@ -1,0 +1,30 @@
+<idea-plugin>
+    <id>top.crossoverjie.opensource.sqlalchemy-transfer</id>
+    <name>Plugin display name here</name>
+    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+
+    <description><![CDATA[
+    Enter short description for your plugin here.<br>
+    <em>most HTML tags may be used</em>
+    ]]></description>
+
+    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+         on how to target different products -->
+    <!-- uncomment to enable plugin in all products
+    <depends>com.intellij.modules.lang</depends>
+    -->
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+        <!--<toolWindow id="Sample Calendar" secondary="true" anchor="right" factoryClass="top.crossoverjie.plugin.window.MyToolWindowFactory"/>-->
+        <toolWindow id="sqlalchemy-transfer" secondary="true" anchor="right" factoryClass="top.crossoverjie.plugin.window.MainWindowFactory"/>
+    </extensions>
+
+
+    <actions>
+        <!--<action id="top.crossoverjie.plugin.action.PopupDialogAction"
+                class="top.crossoverjie.plugin.action.PopupDialogAction" text="Dialog" description="testtest">
+            <add-to-group group-id="MainToolBar" anchor="first"/>
+        </action>-->
+    </actions>
+</idea-plugin>
