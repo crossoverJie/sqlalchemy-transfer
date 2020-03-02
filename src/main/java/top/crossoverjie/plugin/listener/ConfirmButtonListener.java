@@ -36,7 +36,7 @@ public class ConfirmButtonListener implements ActionListener {
         System.out.println("script=" + script);
 
         try {
-            List<TableElement> tables = DDLParse.tables(script);
+            List<TableElement> tables = new DDLParse(script).tables();
 
 
 
