@@ -9,7 +9,8 @@ package top.crossoverjie.plugin.core;
  */
 public enum TokenType {
     INIT,
-    TBALE_NAME,
+    COMMAND,
+    TABLE_NAME,
     FIELD,
     FIELD_TYPE,
     FIELD_LEN,
@@ -17,5 +18,6 @@ public enum TokenType {
     COMMENT,
     VAR,
     GT,
-    DIGIT
+    DIGIT,
+    NONE
 }

@@ -12,7 +12,7 @@ import java.util.List;
  * Date: 2020-03-02 22:29
  * @since JDK 1.8
  */
-public class SqlLexer {
+public class CharLexer {
 
     private List<TokenResult> results = new ArrayList<>();
 
@@ -30,60 +30,27 @@ public class SqlLexer {
                     result = initToken(value, result);
                     status = result.tokenType ;
                     break;
-                case COMMAND:
-                    if (isLetterNotDdlKey(value)){
+                case VAR:
+                    if (isDigit(value) || isLetter(value)){
                         result.text.append(value);
                     }else {
                         status = TokenType.INIT;
                     }
                     break;
-                case FIELD:
-                    if(value == '`'){
-                        status = TokenType.INIT;
-
-                        // 将结尾的字符串 ` 写入
-                        result.text.append(value);
-                    }else if (isLetter(value)){
-                        result.text.append(value);
-                    }
-                    break;
-
-                case FIELD_TYPE:
-                    if (value == 't' || value =='l' || value == 'e' || value=='r'){
-                        status = TokenType.INIT;
-
-                        //结尾字母写入
+                case DIGIT:
+                    if (isDigit(value)){
                         result.text.append(value);
                     }else {
-                        result.text.append(value);
+                        status = TokenType.INIT;
                     }
                     break;
-                case FIELD_LEN:
-                    if (value == ')'){
-                        status = TokenType.INIT;
-
-                        //结尾字母写入
+                case GT:
+                    if (value == '>'){
                         result.text.append(value);
                     }else {
-                        result.text.append(value);
-
-                        if (value == '\n'){
-                            // 换行符的字符单独额外出来
-                            result = new TokenResult();
-                            status = TokenType.INIT ;
-                        }
+                        status = TokenType.INIT;
                     }
                     break;
-                case COMMENT:
-                    if (value == '\''){
-                        status = TokenType.INIT;
-
-                        //结尾字母写入
-                        result.text.append(value);
-                    }else {
-                        result.text.append(value);
-                    }
-
                 default:
                     break;
 
@@ -97,10 +64,6 @@ public class SqlLexer {
         return results;
     }
 
-    /**
-     *  ddl 关键字前缀 `` int decimal varchar
-     */
-    private static final char[] keep_char_prefix = new char[]{'`','i','d','v'} ;
 
     private TokenResult initToken(char value, TokenResult result) {
 
@@ -110,23 +73,17 @@ public class SqlLexer {
             result = new TokenResult() ;
         }
 
-        if (isLetterNotDdlKey(value)){
-            result.tokenType = TokenType.COMMAND;
+        if (isDigit(value)){
+            result.tokenType = TokenType.DIGIT;
             result.text.append(value);
-        }else if (value == '`'){
-            result.tokenType = TokenType.FIELD;
+
+        }else if(value == '>'){
+            result.tokenType = TokenType.GT;
             result.text.append(value);
-        }else if (value == 'i' || value == 'd' || value == 'v'){
-            result.tokenType = TokenType.FIELD_TYPE;
+        }else if (isLetter(value)){
+            result.tokenType = TokenType.VAR;
             result.text.append(value);
-        }else if (value == '('){
-            result.tokenType = TokenType.FIELD_LEN;
-            result.text.append(value);
-        }else if (value == '\''){
-            result.tokenType = TokenType.COMMENT;
-            result.text.append(value);
-        }
-        else {
+        }else {
             result.tokenType = TokenType.INIT;
         }
 
@@ -137,25 +94,11 @@ public class SqlLexer {
 
 
     /**
-     * 是否字母，但不能是关键字
+     * whether letter
      * @param value
      * @return
      */
-    private boolean isLetterNotDdlKey(int value) {
-        for (char prefix : keep_char_prefix) {
-            if (prefix == value){
-                return false ;
-            }
-        }
-        return isLetter(value) ;
-    }
-
-    /**
-     * 是否字母
-     * @param value
-     * @return
-     */
-    private boolean isLetter(int value){
+    private boolean isLetter(int value) {
         return value >= 65 && value <= 122;
     }
 
