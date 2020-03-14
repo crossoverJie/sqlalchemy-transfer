@@ -22,7 +22,7 @@ public class SqlLexerTest {
     @Test
     public void tokenize2() throws IOException {
         SqlLexer lexer = new SqlLexer();
-        String sql = "CREATE TABLE `delivery_fee_for_courier` (\n`id` int(11) NOT NULL AUTO_INCREMENT,\n`city_id` int(11) NOT NULL,\n`plan_id` int(11) NOT NULL COMMENT '配送费方案ID',\n`area_id` int(11) NOT NULL DEFAULT 0 COMMENT '区域ID',\n`order_delivery_type` int(11) NOT NULL COMMENT '订单类型（1/2/3)普通订单、代购订单、私人订单',\n`drivering_type` int(11) NOT NULL DEFAULT 0 COMMENT '载具类型 0 通用载具 详见常量：COURIER_DRIVING_TYPE',\n`status` int(11) NOT NULL COMMENT '开关状态 0关闭，1开启',\n`is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除状态 0未删除 1删除',\n`create_time` datetime NOT NULL,\n`update_time` datetime NULL,\nPRIMARY KEY (`id`)\n)\nCOMMENT = '面向配送员的配送费方案';";
+        String sql = "CREATE TABLE `open_api_terminal_info` (\n  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',\n  `name` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '终端机名称',\n  `clazz` varchar(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT '业务实现类',\n  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家终端机信息表'";
         List<SqlLexer.TokenResult> tokenize = lexer.tokenize(sql);
         for (SqlLexer.TokenResult result : tokenize) {
             System.out.println(result.getTokenType() + "\t" + result.getText().toString());
