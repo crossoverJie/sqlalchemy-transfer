@@ -18,7 +18,6 @@ public enum DDLTokenType {
     FIELD_COMMENT,
     P_K,
     P_K_V, //主键值
-    COMMENT,
     VAR,
     DIGIT,
     NONE

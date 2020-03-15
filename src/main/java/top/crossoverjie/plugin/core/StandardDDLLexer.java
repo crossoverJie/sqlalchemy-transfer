@@ -21,7 +21,7 @@ public class StandardDDLLexer {
     /**
      * 字段类型前缀 varchar int decimal
      */
-    private String fieldTypePrefix = "vid" ;
+    private String fieldTypePrefix = "vid";
 
     public List<TokenResult> tokenize(String script, Status pid) throws IOException {
 
@@ -38,102 +38,102 @@ public class StandardDDLLexer {
                     status = result.tokenType;
                     break;
                 case CT:
-                    if (value == '\n'){
+                    if (value == '\n') {
                         status = DDLTokenType.INIT;
 
                         // 继续解析 CREATE TABLE `t` 中的 t
-                        Status newStatus = result.status(Status.BASE_CRT) ;
-                        this.tokenize(result.text.toString(), newStatus) ;
+                        Status newStatus = result.status(Status.BASE_CRT);
+                        this.tokenize(result.text.toString(), newStatus);
 
-                    }else {
-                        result.text.append(value);
+                    } else {
+                        result.text.append(value, false);
                     }
                     break;
                 case TBN:
-                    if (value == '`'){
+                    if (value == '`') {
                         status = DDLTokenType.INIT;
-                    }else {
-                        result.text.append(value);
+                    } else {
+                        result.text.append(value, false);
                     }
                     break;
                 case FI:
-                    if (value == ','){
+                    if (value == ',') {
                         status = DDLTokenType.INIT;
 
                         //继续解析 `name` varchar(50) DEFAULT NULL COMMENT '终端机名称' 中的 `name`
-                        Status newStatus = result.status(Status.BASE_FIELD_NAME) ;
-                        this.tokenize(result.text.toString(), newStatus) ;
+                        Status newStatus = result.status(Status.BASE_FIELD_NAME);
+                        this.tokenize(result.text.toString(), newStatus);
 
                         //继续解析 `name` varchar(50) DEFAULT NULL COMMENT '终端机名称' 中的 varchar
-                        newStatus = result.status(Status.BASE_FIELD_TYPE) ;
-                        this.tokenize(result.text.toString(), newStatus) ;
+                        newStatus = result.status(Status.BASE_FIELD_TYPE);
+                        this.tokenize(result.text.toString(), newStatus);
 
                         //继续解析 `name` varchar(50) DEFAULT NULL COMMENT '终端机名称' 中的 50
-                        newStatus = result.status(Status.BASE_FIELD_LEN) ;
-                        this.tokenize(result.text.toString(), newStatus) ;
+                        newStatus = result.status(Status.BASE_FIELD_LEN);
+                        this.tokenize(result.text.toString(), newStatus);
 
                         //继续解析 `name` varchar(50) DEFAULT NULL COMMENT '终端机名称' 中的 '终端机名称'
-                        newStatus = result.status(BASE_FIELD_COMMENT) ;
-                        this.tokenize(result.text.toString(), newStatus) ;
+                        newStatus = result.status(BASE_FIELD_COMMENT);
+                        this.tokenize(result.text.toString(), newStatus);
 
 
-                    }else {
-                        result.text.append(value);
+                    } else {
+                        result.text.append(value, false);
                     }
                     break;
                 case FIELD_NAME:
-                    if (value == '`'){
+                    if (value == '`') {
                         status = DDLTokenType.INIT;
-                    }else {
-                        result.text.append(value);
+                    } else {
+                        result.text.append(value, false);
                     }
                     break;
                 case FIELD_TYPE:
 
                     // 解析 varchar(50) 为 varchar，所以只能以 ( 结尾
-                    if (value  == '('){
+                    if (value == '(') {
                         status = DDLTokenType.INIT;
-                    }else {
-                        result.text.append(value);
+                    } else {
+                        if (isNotFieldType(value)) {
+                            status = DDLTokenType.INIT;
+                        } else {
+                            result.text.append(value,true);
+                        }
                     }
                     break;
                 case FIELD_LEN:
-                    if (isDigit(value)){
+                    if (value == ')') {
                         status = DDLTokenType.INIT;
-                        result.text.append(value);
-                    }else {
-                        //过滤掉 utf8mb4 --> 8mb4 这类数据
-                        if (!isDigit(value)){
-                            status = DDLTokenType.INIT;
-                        }
-                        result.text.append(value);
+                    } else {
+                        result.text.append(value, false);
                     }
                     break;
                 case FIELD_COMMENT:
-                    if (value == '\''){
+                    if (value == '\'') {
                         status = DDLTokenType.INIT;
-                    }else {
-                        result.text.append(value);
+                    } else {
+                        result.text.append(value, false);
                     }
                     break;
                 case P_K:
-                    if (value == ')'){
-                        result.text.append(value);
+                    if (value == ')') {
+                        result.text.append(value, false);
                         status = DDLTokenType.INIT;
 
                         // 继续解析 PRIMARY KEY (`id`)--->id
-                        Status newStatus = result.status(Status.BASE_FIELD_PK) ;
-                        this.tokenize(result.text.toString(), newStatus) ;
-                    }else {
-                        result.text.append(value);
+                        Status newStatus = result.status(Status.BASE_FIELD_PK);
+                        this.tokenize(result.text.toString(), newStatus);
+                    } else {
+                        result.text.append(value, false);
                     }
                     break;
                 case P_K_V:
-                    if (value == '`'){
+                    if (value == '`') {
                         status = DDLTokenType.INIT;
-                    }else {
-                        result.text.append(value);
+                    } else {
+                        result.text.append(value, false);
                     }
+                    break;
 
                 default:
                     break;
@@ -149,7 +149,6 @@ public class StandardDDLLexer {
     }
 
 
-
     private TokenResult initToken(char value, TokenResult result, Status pid) {
 
         //再次调用初始化的时候一定是状态转移后，说明可以写入一个完整的数据了。
@@ -158,31 +157,29 @@ public class StandardDDLLexer {
             result = new TokenResult();
         }
 
-        if (value == 'C' && pid == Status.BASE_INIT){
+        if (value == 'C' && pid == Status.BASE_INIT) {
             result.tokenType = DDLTokenType.CT;
-            result.text.append(value);
-        }else if (value == '`' && pid == Status.BASE_INIT){
+            result.text.append(value, false);
+        } else if (value == '`' && pid == Status.BASE_INIT) {
             result.tokenType = DDLTokenType.FI;
-            result.text.append(value);
-        }else if (value == '`' && pid == Status.BASE_CRT){
+            result.text.append(value, false);
+        } else if (value == '`' && pid == Status.BASE_CRT) {
             result.tokenType = DDLTokenType.TBN;
-        }else if (value == '`' && pid == Status.BASE_FIELD_NAME){
+        } else if (value == '`' && pid == Status.BASE_FIELD_NAME) {
             result.tokenType = DDLTokenType.FIELD_NAME;
-        }else if (isPrefixFieldType(value) && pid == Status.BASE_FIELD_TYPE){
+        } else if (value == ' ' && pid == Status.BASE_FIELD_TYPE) {
             result.tokenType = DDLTokenType.FIELD_TYPE;
-            result.text.append(value);
-        }else if (isDigit(value) && pid == Status.BASE_FIELD_LEN){
+            result.text.append(value, false);
+        } else if (value == '(' && pid == Status.BASE_FIELD_LEN) {
             result.tokenType = DDLTokenType.FIELD_LEN;
-            result.text.append(value);
-        }else if (value == '\'' && pid == Status.BASE_FIELD_COMMENT){
+        } else if (value == '\'' && pid == Status.BASE_FIELD_COMMENT) {
             result.tokenType = DDLTokenType.FIELD_COMMENT;
-        }else if (value == 'P' && pid == Status.BASE_INIT){
+        } else if (value == 'P' && pid == Status.BASE_INIT) {
             result.tokenType = DDLTokenType.P_K;
-            result.text.append(value);
-        }else if (value == '`' && pid == Status.BASE_FIELD_PK){
+            result.text.append(value, false);
+        } else if (value == '`' && pid == Status.BASE_FIELD_PK) {
             result.tokenType = DDLTokenType.P_K_V;
-        }
-        else {
+        } else {
             result.tokenType = DDLTokenType.INIT;
         }
 
@@ -202,34 +199,48 @@ public class StandardDDLLexer {
         return value >= 65 && value <= 122;
     }
 
+    /**
+     * 不属于 fieldType 的字符，NOT NULL AUTO_INCREMENT COMMENT SET utf8mb4 DEFAULT NULL COMMENT
+     */
+    private String notFieldType = "' N A C S u D";
+
+    private boolean isNotFieldType(char value) {
+        for (char c : notFieldType.trim().toCharArray()) {
+            if (c == value) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     /**
      * 是否为字段前缀字符串
+     *
      * @param value
      * @return
      */
-    private boolean isPrefixFieldType(char value){
+    private boolean isPrefixFieldType(char value) {
         for (char c : fieldTypePrefix.toCharArray()) {
-            if (c == value){
-                return true ;
+            if (c == value) {
+                return true;
             }
         }
-        return false ;
+        return false;
     }
 
-    private boolean isPrimaryKey(char value){
-        if (!isLetter(value)){
-            return false ;
+    private boolean isPrimaryKey(char value) {
+        if (!isLetter(value)) {
+            return false;
         }
 
-        String primaryKey = "`PRIMARY KEY (" ;
+        String primaryKey = "`PRIMARY KEY (";
         for (char c : primaryKey.toCharArray()) {
-            if (c == value){
-                return false ;
+            if (c == value) {
+                return false;
             }
         }
 
-        return true ;
+        return true;
     }
 
     /**
@@ -252,13 +263,13 @@ public class StandardDDLLexer {
             return text;
         }
 
-        public Status status(){
-            return this.status ;
+        public Status status() {
+            return this.status;
         }
 
-        public Status status(Status status){
-            this.status = status ;
-            return status ;
+        public Status status(Status status) {
+            this.status = status;
+            return status;
         }
 
         public void setText(Text text) {
@@ -277,25 +288,23 @@ public class StandardDDLLexer {
     public class Text {
         private StringBuilder text = new StringBuilder();
 
-        public void append(char value) {
-            text.append(value);
-        }
-
         /**
-         * 兼容 varchar
          *
-         * @return
+         * @param value
+         * @param isBlank 是否需要跳过空格
          */
-        public boolean isVarchar() {
-            if (this.text.toString().equals("va")) {
-                return true;
+        public void append(char value, boolean isBlank) {
+            if (isBlank && value != ' ') {
+                text.append(value);
             } else {
-                return false;
+                text.append(value);
             }
         }
 
+
+
         public int length() {
-            return this.text.length();
+            return this.text.toString().trim().length();
         }
 
         @Override
@@ -305,10 +314,10 @@ public class StandardDDLLexer {
     }
 
 
-    public class DDLInfo{
-        private String tableName ;
-        private String primaryKey ;
-        private String comment ;
+    public class DDLInfo {
+        private String tableName;
+        private String primaryKey;
+        private String comment;
 
         public String getTableName() {
             return tableName;
@@ -335,11 +344,11 @@ public class StandardDDLLexer {
         }
     }
 
-    public class FieldInfo{
-        private String fieldName ;
-        private String filedType ;
-        private String fieldLen ;
-        private String comment ;
+    public class FieldInfo {
+        private String fieldName;
+        private String filedType;
+        private String fieldLen;
+        private String comment;
 
         public String getFieldName() {
             return fieldName;

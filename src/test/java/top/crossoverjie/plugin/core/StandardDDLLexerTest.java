@@ -40,10 +40,32 @@ public class StandardDDLLexerTest {
     }
 
     @Test
+    public void tokenize4() throws IOException {
+        StandardDDLLexer lexer = new StandardDDLLexer();
+        String sql = "`id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',";
+        List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql,Status.BASE_FIELD_TYPE);
+        System.out.println("base \ttoken-type \t value");
+        for (StandardDDLLexer.TokenResult result : tokenize) {
+            System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString());
+        }
+    }
+
+    @Test
     public void tokenize3() throws IOException {
         StandardDDLLexer lexer = new StandardDDLLexer();
         String sql = "`name` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '终端机名称'";
         List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql,Status.BASE_FIELD_COMMENT);
+        System.out.println("base \ttoken-type \t value");
+        for (StandardDDLLexer.TokenResult result : tokenize) {
+            System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString());
+        }
+    }
+
+    @Test
+    public void tokenize5() throws IOException {
+        StandardDDLLexer lexer = new StandardDDLLexer();
+        String sql = "`name` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '终端机名称'";
+        List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql,Status.BASE_FIELD_LEN);
         System.out.println("base \ttoken-type \t value");
         for (StandardDDLLexer.TokenResult result : tokenize) {
             System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString());
