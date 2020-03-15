@@ -18,7 +18,9 @@ public class StandardDDLLexer {
 
     private List<TokenResult> results = new ArrayList<>();
 
-    public List<TokenResult> tokenize(String script, Status pid) throws IOException {
+    private int id = 0 ;
+
+    public List<TokenResult> tokenize(String script, Status pStatus) throws IOException {
 
         CharArrayReader reader = new CharArrayReader(script.toCharArray());
         DDLTokenType status = DDLTokenType.INIT;
@@ -29,7 +31,7 @@ public class StandardDDLLexer {
             value = (char) ch;
             switch (status) {
                 case INIT:
-                    result = initToken(value, result, pid);
+                    result = initToken(value, result, pStatus);
                     status = result.tokenType;
                     break;
                 case CT:
@@ -143,8 +145,14 @@ public class StandardDDLLexer {
         return results;
     }
 
-
-    private TokenResult initToken(char value, TokenResult result, Status pid) {
+    /**
+     *
+     * @param value
+     * @param result
+     * @param pStatus 用于递归校验状态
+     * @return
+     */
+    private TokenResult initToken(char value, TokenResult result, Status pStatus) {
 
         //再次调用初始化的时候一定是状态转移后，说明可以写入一个完整的数据了。
         if (result.getText().length() > 0) {
@@ -152,27 +160,27 @@ public class StandardDDLLexer {
             result = new TokenResult();
         }
 
-        if (value == 'C' && pid == Status.BASE_INIT) {
+        if (value == 'C' && pStatus == Status.BASE_INIT) {
             result.tokenType = DDLTokenType.CT;
             result.text.append(value);
-        } else if (value == '`' && pid == Status.BASE_INIT) {
+        } else if (value == '`' && pStatus == Status.BASE_INIT) {
             result.tokenType = DDLTokenType.FI;
             result.text.append(value);
-        } else if (value == '`' && pid == Status.BASE_CRT) {
+        } else if (value == '`' && pStatus == Status.BASE_CRT) {
             result.tokenType = DDLTokenType.TBN;
-        } else if (value == '`' && pid == Status.BASE_FIELD_NAME) {
+        } else if (value == '`' && pStatus == Status.BASE_FIELD_NAME) {
             result.tokenType = DDLTokenType.FIELD_NAME;
-        } else if (value == ' ' && pid == Status.BASE_FIELD_TYPE) {
+        } else if (value == ' ' && pStatus == Status.BASE_FIELD_TYPE) {
             result.tokenType = DDLTokenType.FIELD_TYPE;
             result.text.append(value);
-        } else if (value == '(' && pid == Status.BASE_FIELD_LEN) {
+        } else if (value == '(' && pStatus == Status.BASE_FIELD_LEN) {
             result.tokenType = DDLTokenType.FIELD_LEN;
-        } else if (value == '\'' && pid == Status.BASE_FIELD_COMMENT) {
+        } else if (value == '\'' && pStatus == Status.BASE_FIELD_COMMENT) {
             result.tokenType = DDLTokenType.FIELD_COMMENT;
-        } else if (value == 'P' && pid == Status.BASE_INIT) {
+        } else if (value == 'P' && pStatus == Status.BASE_INIT) {
             result.tokenType = DDLTokenType.P_K;
             result.text.append(value);
-        } else if (value == '`' && pid == Status.BASE_FIELD_PK) {
+        } else if (value == '`' && pStatus == Status.BASE_FIELD_PK) {
             result.tokenType = DDLTokenType.P_K_V;
         } else {
             result.tokenType = DDLTokenType.INIT;
