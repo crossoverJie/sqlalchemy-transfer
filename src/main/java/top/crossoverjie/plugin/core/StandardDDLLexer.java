@@ -18,11 +18,6 @@ public class StandardDDLLexer {
 
     private List<TokenResult> results = new ArrayList<>();
 
-    /**
-     * 字段类型前缀 varchar int decimal
-     */
-    private String fieldTypePrefix = "vid";
-
     public List<TokenResult> tokenize(String script, Status pid) throws IOException {
 
         CharArrayReader reader = new CharArrayReader(script.toCharArray());
@@ -190,16 +185,6 @@ public class StandardDDLLexer {
 
 
     /**
-     * 是否字母
-     *
-     * @param value
-     * @return
-     */
-    private boolean isLetter(int value) {
-        return value >= 65 && value <= 122;
-    }
-
-    /**
      * 不属于 fieldType 的字符，NOT NULL AUTO_INCREMENT COMMENT SET utf8mb4 DEFAULT NULL COMMENT
      */
     private String notFieldType = "' N A C S u D";
@@ -213,35 +198,7 @@ public class StandardDDLLexer {
         return false;
     }
 
-    /**
-     * 是否为字段前缀字符串
-     *
-     * @param value
-     * @return
-     */
-    private boolean isPrefixFieldType(char value) {
-        for (char c : fieldTypePrefix.toCharArray()) {
-            if (c == value) {
-                return true;
-            }
-        }
-        return false;
-    }
 
-    private boolean isPrimaryKey(char value) {
-        if (!isLetter(value)) {
-            return false;
-        }
-
-        String primaryKey = "`PRIMARY KEY (";
-        for (char c : primaryKey.toCharArray()) {
-            if (c == value) {
-                return false;
-            }
-        }
-
-        return true;
-    }
 
     /**
      * whether digit
