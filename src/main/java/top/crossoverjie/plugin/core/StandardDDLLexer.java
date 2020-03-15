@@ -46,14 +46,14 @@ public class StandardDDLLexer {
                         this.tokenize(result.text.toString(), newStatus);
 
                     } else {
-                        result.text.append(value, false);
+                        result.text.append(value);
                     }
                     break;
                 case TBN:
                     if (value == '`') {
                         status = DDLTokenType.INIT;
                     } else {
-                        result.text.append(value, false);
+                        result.text.append(value);
                     }
                     break;
                 case FI:
@@ -78,14 +78,14 @@ public class StandardDDLLexer {
 
 
                     } else {
-                        result.text.append(value, false);
+                        result.text.append(value);
                     }
                     break;
                 case FIELD_NAME:
                     if (value == '`') {
                         status = DDLTokenType.INIT;
                     } else {
-                        result.text.append(value, false);
+                        result.text.append(value);
                     }
                     break;
                 case FIELD_TYPE:
@@ -97,7 +97,7 @@ public class StandardDDLLexer {
                         if (isNotFieldType(value)) {
                             status = DDLTokenType.INIT;
                         } else {
-                            result.text.append(value,true);
+                            result.text.append(value);
                         }
                     }
                     break;
@@ -105,33 +105,33 @@ public class StandardDDLLexer {
                     if (value == ')') {
                         status = DDLTokenType.INIT;
                     } else {
-                        result.text.append(value, false);
+                        result.text.append(value);
                     }
                     break;
                 case FIELD_COMMENT:
                     if (value == '\'') {
                         status = DDLTokenType.INIT;
                     } else {
-                        result.text.append(value, false);
+                        result.text.append(value);
                     }
                     break;
                 case P_K:
                     if (value == ')') {
-                        result.text.append(value, false);
+                        result.text.append(value);
                         status = DDLTokenType.INIT;
 
                         // 继续解析 PRIMARY KEY (`id`)--->id
                         Status newStatus = result.status(Status.BASE_FIELD_PK);
                         this.tokenize(result.text.toString(), newStatus);
                     } else {
-                        result.text.append(value, false);
+                        result.text.append(value);
                     }
                     break;
                 case P_K_V:
                     if (value == '`') {
                         status = DDLTokenType.INIT;
                     } else {
-                        result.text.append(value, false);
+                        result.text.append(value);
                     }
                     break;
 
@@ -159,24 +159,24 @@ public class StandardDDLLexer {
 
         if (value == 'C' && pid == Status.BASE_INIT) {
             result.tokenType = DDLTokenType.CT;
-            result.text.append(value, false);
+            result.text.append(value);
         } else if (value == '`' && pid == Status.BASE_INIT) {
             result.tokenType = DDLTokenType.FI;
-            result.text.append(value, false);
+            result.text.append(value);
         } else if (value == '`' && pid == Status.BASE_CRT) {
             result.tokenType = DDLTokenType.TBN;
         } else if (value == '`' && pid == Status.BASE_FIELD_NAME) {
             result.tokenType = DDLTokenType.FIELD_NAME;
         } else if (value == ' ' && pid == Status.BASE_FIELD_TYPE) {
             result.tokenType = DDLTokenType.FIELD_TYPE;
-            result.text.append(value, false);
+            result.text.append(value);
         } else if (value == '(' && pid == Status.BASE_FIELD_LEN) {
             result.tokenType = DDLTokenType.FIELD_LEN;
         } else if (value == '\'' && pid == Status.BASE_FIELD_COMMENT) {
             result.tokenType = DDLTokenType.FIELD_COMMENT;
         } else if (value == 'P' && pid == Status.BASE_INIT) {
             result.tokenType = DDLTokenType.P_K;
-            result.text.append(value, false);
+            result.text.append(value);
         } else if (value == '`' && pid == Status.BASE_FIELD_PK) {
             result.tokenType = DDLTokenType.P_K_V;
         } else {
@@ -293,12 +293,8 @@ public class StandardDDLLexer {
          * @param value
          * @param isBlank 是否需要跳过空格
          */
-        public void append(char value, boolean isBlank) {
-            if (isBlank && value != ' ') {
-                text.append(value);
-            } else {
-                text.append(value);
-            }
+        public void append(char value) {
+            text.append(value);
         }
 
 
