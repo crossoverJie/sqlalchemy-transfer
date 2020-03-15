@@ -10,11 +10,13 @@ package top.crossoverjie.plugin.core;
 public enum TokenType {
     INIT,
     COMMAND,
+    CT, //创建 table
     TABLE_NAME,
     FIELD,
     FIELD_TYPE,
     FIELD_LEN,
-    KEY,
+    P_K,
+    P_K_V, //主键值
     COMMENT,
     VAR,
     GT,
