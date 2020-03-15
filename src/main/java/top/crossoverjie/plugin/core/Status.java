@@ -7,4 +7,5 @@ public enum Status {
     BASE_FIELD_TYPE,
     BASE_FIELD_LEN,
     BASE_FIELD_COMMENT,
+    BASE_FIELD_PK,
 }

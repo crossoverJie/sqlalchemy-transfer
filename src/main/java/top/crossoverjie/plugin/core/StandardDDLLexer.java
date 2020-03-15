@@ -115,6 +115,25 @@ public class StandardDDLLexer {
                     }else {
                         result.text.append(value);
                     }
+                    break;
+                case P_K:
+                    if (value == ')'){
+                        result.text.append(value);
+                        status = DDLTokenType.INIT;
+
+                        // 继续解析 PRIMARY KEY (`id`)--->id
+                        Status newStatus = result.status(Status.BASE_FIELD_PK) ;
+                        this.tokenize(result.text.toString(), newStatus) ;
+                    }else {
+                        result.text.append(value);
+                    }
+                    break;
+                case P_K_V:
+                    if (value == '`'){
+                        status = DDLTokenType.INIT;
+                    }else {
+                        result.text.append(value);
+                    }
 
                 default:
                     break;
@@ -157,6 +176,11 @@ public class StandardDDLLexer {
             result.text.append(value);
         }else if (value == '\'' && pid == Status.BASE_FIELD_COMMENT){
             result.tokenType = DDLTokenType.FIELD_COMMENT;
+        }else if (value == 'P' && pid == Status.BASE_INIT){
+            result.tokenType = DDLTokenType.P_K;
+            result.text.append(value);
+        }else if (value == '`' && pid == Status.BASE_FIELD_PK){
+            result.tokenType = DDLTokenType.P_K_V;
         }
         else {
             result.tokenType = DDLTokenType.INIT;
