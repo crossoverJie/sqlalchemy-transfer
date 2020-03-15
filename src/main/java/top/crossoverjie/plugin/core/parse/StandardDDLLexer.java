@@ -1,11 +1,11 @@
-package top.crossoverjie.plugin.core;
+package top.crossoverjie.plugin.core.parse;
 
 import java.io.CharArrayReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static top.crossoverjie.plugin.core.Status.BASE_FIELD_COMMENT;
+import static top.crossoverjie.plugin.core.parse.Status.BASE_FIELD_COMMENT;
 
 /**
  * Function:
@@ -20,7 +20,7 @@ public class StandardDDLLexer {
 
     private int id = 0 ;
 
-    public List<TokenResult> tokenize(String script, Status pStatus) throws IOException {
+    public List<TokenResult> tokenize(String script, Status pStatus, int pid) throws IOException {
 
         CharArrayReader reader = new CharArrayReader(script.toCharArray());
         DDLTokenType status = DDLTokenType.INIT;
@@ -40,7 +40,7 @@ public class StandardDDLLexer {
 
                         // 继续解析 CREATE TABLE `t` 中的 t
                         Status newStatus = result.status(Status.BASE_CRT);
-                        this.tokenize(result.text.toString(), newStatus);
+                        this.tokenize(result.text.toString(), newStatus, result.pid);
 
                     } else {
                         result.text.append(value);
@@ -49,6 +49,7 @@ public class StandardDDLLexer {
                 case TBN:
                     if (value == '`') {
                         status = DDLTokenType.INIT;
+                        result.pid = pid ;
                     } else {
                         result.text.append(value);
                     }
@@ -56,22 +57,23 @@ public class StandardDDLLexer {
                 case FI:
                     if (value == ',') {
                         status = DDLTokenType.INIT;
+                        result.pid = nextPid() ;
 
                         //继续解析 `name` varchar(50) DEFAULT NULL COMMENT '终端机名称' 中的 `name`
                         Status newStatus = result.status(Status.BASE_FIELD_NAME);
-                        this.tokenize(result.text.toString(), newStatus);
+                        this.tokenize(result.text.toString(), newStatus,result.pid);
 
                         //继续解析 `name` varchar(50) DEFAULT NULL COMMENT '终端机名称' 中的 varchar
                         newStatus = result.status(Status.BASE_FIELD_TYPE);
-                        this.tokenize(result.text.toString(), newStatus);
+                        this.tokenize(result.text.toString(), newStatus,result.pid);
 
                         //继续解析 `name` varchar(50) DEFAULT NULL COMMENT '终端机名称' 中的 50
                         newStatus = result.status(Status.BASE_FIELD_LEN);
-                        this.tokenize(result.text.toString(), newStatus);
+                        this.tokenize(result.text.toString(), newStatus,result.pid);
 
                         //继续解析 `name` varchar(50) DEFAULT NULL COMMENT '终端机名称' 中的 '终端机名称'
                         newStatus = result.status(BASE_FIELD_COMMENT);
-                        this.tokenize(result.text.toString(), newStatus);
+                        this.tokenize(result.text.toString(), newStatus,result.pid);
 
 
                     } else {
@@ -81,6 +83,7 @@ public class StandardDDLLexer {
                 case FIELD_NAME:
                     if (value == '`') {
                         status = DDLTokenType.INIT;
+                        result.pid = pid ;
                     } else {
                         result.text.append(value);
                     }
@@ -90,6 +93,7 @@ public class StandardDDLLexer {
                     // 解析 varchar(50) 为 varchar，所以只能以 ( 结尾
                     if (value == '(') {
                         status = DDLTokenType.INIT;
+                        result.pid = pid ;
                     } else {
                         if (isNotFieldType(value)) {
                             status = DDLTokenType.INIT;
@@ -101,6 +105,7 @@ public class StandardDDLLexer {
                 case FIELD_LEN:
                     if (value == ')') {
                         status = DDLTokenType.INIT;
+                        result.pid = pid ;
                     } else {
                         result.text.append(value);
                     }
@@ -108,6 +113,7 @@ public class StandardDDLLexer {
                 case FIELD_COMMENT:
                     if (value == '\'') {
                         status = DDLTokenType.INIT;
+                        result.pid = pid ;
                     } else {
                         result.text.append(value);
                     }
@@ -116,10 +122,11 @@ public class StandardDDLLexer {
                     if (value == ')') {
                         result.text.append(value);
                         status = DDLTokenType.INIT;
+                        result.pid = nextPid() ;
 
                         // 继续解析 PRIMARY KEY (`id`)--->id
                         Status newStatus = result.status(Status.BASE_FIELD_PK);
-                        this.tokenize(result.text.toString(), newStatus);
+                        this.tokenize(result.text.toString(), newStatus, result.pid);
                     } else {
                         result.text.append(value);
                     }
@@ -127,6 +134,7 @@ public class StandardDDLLexer {
                 case P_K_V:
                     if (value == '`') {
                         status = DDLTokenType.INIT;
+                        result.pid = pid ;
                     } else {
                         result.text.append(value);
                     }
@@ -207,15 +215,8 @@ public class StandardDDLLexer {
     }
 
 
-
-    /**
-     * whether digit
-     *
-     * @param value
-     * @return
-     */
-    private boolean isDigit(int value) {
-        return value >= 48 && value <= 57;
+    private int nextPid(){
+        return ++this.id ;
     }
 
 
@@ -223,6 +224,15 @@ public class StandardDDLLexer {
         private Status status = Status.BASE_INIT;
         private Text text = new Text();
         private DDLTokenType tokenType;
+        private int pid = 0;
+
+        public int getPid() {
+            return pid;
+        }
+
+        public void setPid(int pid) {
+            this.pid = pid;
+        }
 
         public Text getText() {
             return text;
@@ -256,7 +266,6 @@ public class StandardDDLLexer {
         /**
          *
          * @param value
-         * @param isBlank 是否需要跳过空格
          */
         public void append(char value) {
             text.append(value);

@@ -1,4 +1,4 @@
-package top.crossoverjie.plugin.core;
+package top.crossoverjie.plugin.core.parse;
 
 /**
  * Function:
@@ -18,8 +18,5 @@ public enum DDLTokenType {
     FIELD_COMMENT,
     P_K,
     P_K_V, //主键值
-    VAR,
-    DIGIT,
-    NONE
 
 }
