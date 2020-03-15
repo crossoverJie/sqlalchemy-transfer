@@ -101,7 +101,6 @@ public class StandardDDLLexerTest {
 
 
         for (Map.Entry<Integer, List<StandardDDLLexer.TokenResult>> entry : childInfoMapping.entrySet()) {
-            Integer pid = entry.getKey();
             List<StandardDDLLexer.TokenResult> tokenResults = entry.getValue();
             FieldInfo info = new FieldInfo();
             for (StandardDDLLexer.TokenResult result : tokenResults) {
