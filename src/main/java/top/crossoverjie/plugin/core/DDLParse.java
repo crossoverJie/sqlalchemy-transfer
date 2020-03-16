@@ -1,6 +1,6 @@
 package top.crossoverjie.plugin.core;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import top.crossoverjie.plugin.core.parse.DDLInfo;
 import top.crossoverjie.plugin.core.parse.DDLTokenType;
 import top.crossoverjie.plugin.core.parse.FieldInfo;

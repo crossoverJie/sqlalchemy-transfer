@@ -1,6 +1,6 @@
 <idea-plugin>
     <id>top.crossoverjie.opensource.sqlalchemy-transfer</id>
-    <name>Plugin display name here</name>
+    <name>sqlalchemy-transfer</name>
     <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
     <description><![CDATA[
@@ -20,6 +20,7 @@
         <toolWindow id="sqlalchemy-transfer" secondary="true" anchor="right" factoryClass="top.crossoverjie.plugin.window.MainWindowFactory"/>
     </extensions>
 
+    <idea-version since-build="183.3795.13" />
 
     <actions>
         <!--<action id="top.crossoverjie.plugin.action.PopupDialogAction"
@@ -27,4 +28,6 @@
             <add-to-group group-id="MainToolBar" anchor="first"/>
         </action>-->
     </actions>
+    <depends>com.intellij.modules.lang</depends>
+    <depends>com.intellij.modules.platform</depends>
 </idea-plugin>
