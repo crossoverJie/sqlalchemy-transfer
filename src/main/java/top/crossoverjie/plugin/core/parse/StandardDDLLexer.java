@@ -94,7 +94,12 @@ public class StandardDDLLexer {
                     if (value == '(') {
                         status = DDLTokenType.INIT;
                         result.pid = pid ;
-                    } else {
+                    } else if (value == ' '){
+                        // 兼容 `create_time` datetime   这类数据（datetime是以空格结尾）
+                        status = DDLTokenType.INIT;
+                        result.pid = pid ;
+                    }
+                    else {
                         if (isNotFieldType(value)) {
                             status = DDLTokenType.INIT;
                         } else {

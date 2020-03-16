@@ -163,4 +163,19 @@ public class StandardDDLLexerTest {
             System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString() + "\t" + result.getPid());
         }
     }
+
+    @Test
+    public void tokenize7() throws IOException {
+        StandardDDLLexer lexer = new StandardDDLLexer();
+        String sql = "CREATE TABLE `open_api_terminal_info` (\n" +
+                "  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',\n" +
+                "  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,\n" +
+                "  PRIMARY KEY (`id`)\n" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家终端机信息表'";
+        List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_INIT, 0);
+        System.out.println("base \ttoken-type \t value \t pid");
+        for (StandardDDLLexer.TokenResult result : tokenize) {
+            System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString() + "\t" + result.getPid());
+        }
+    }
 }
