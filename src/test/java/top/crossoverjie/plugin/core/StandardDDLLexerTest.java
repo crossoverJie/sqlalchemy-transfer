@@ -81,24 +81,6 @@ public class StandardDDLLexerTest {
 
 
         List<FieldInfo> fieldInfos = new ArrayList<>();
-//        for (Integer pid : fi) {
-//            FieldInfo info = new FieldInfo() ;
-//            if (result.getTokenType() == DDLTokenType.FIELD_NAME){
-//                info.setFieldName(result.getText().toString());
-//            }
-//            if (result.getTokenType() == DDLTokenType.FIELD_TYPE){
-//                info.setFiledType(result.getText().toString());
-//            }
-//            if (result.getTokenType() == DDLTokenType.FIELD_LEN){
-//                info.setFieldLen(result.getText().toString());
-//            }
-//            if (result.getTokenType() == DDLTokenType.FIELD_COMMENT){
-//                info.setComment(result.getText().toString());
-//            }
-//            fieldInfos.add(info) ;
-//
-//        }
-
 
         for (Map.Entry<Integer, List<StandardDDLLexer.TokenResult>> entry : childInfoMapping.entrySet()) {
             List<StandardDDLLexer.TokenResult> tokenResults = entry.getValue();
