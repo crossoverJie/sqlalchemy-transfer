@@ -1,10 +1,15 @@
 package top.crossoverjie.plugin.listener;
 
 import com.intellij.openapi.ui.Messages;
+import top.crossoverjie.plugin.core.DDLParse;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 
 /**
  * Function:
@@ -25,25 +30,23 @@ public class ConfirmButtonListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent event) {
-        String path = inputFileTextField.getText();
+        String filePath = inputFileTextField.getText();
         String script = scriptTextArea.getText();
 
-        System.out.println("path=" + path);
+        System.out.println("path=" + filePath);
         System.out.println("script=" + script);
 
         try {
-//            List<TableElement> tables = new DDLParse(script).generateDDLInfo();
-//
-//
-//
-//            for (TableElement table : tables) {
-//                System.out.println(table.getTableName());
-//            }
+            String transfer = new DDLParse(script).transfer();
+
+            Path path = Paths.get(filePath);
+            Files.write(path, transfer.getBytes(), StandardOpenOption.APPEND);
+
         } catch (Exception e1) {
             System.err.println(e1);
         }
 
 
-        Messages.showMessageDialog(path + "has already finished", "notify", Messages.getInformationIcon());
+        Messages.showMessageDialog(filePath + "has already finished", "notify", Messages.getInformationIcon());
     }
 }

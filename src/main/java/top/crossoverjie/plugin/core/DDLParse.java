@@ -211,6 +211,8 @@ public class DDLParse {
                     fieldMapping.put(FILED_TYPE, DB_TYPE_TO_PY.get(fieldType.toLowerCase()));
                     if (StringUtils.isNotEmpty(comment)){
                         fieldMapping.put(FILED_COMMENT, comment);
+                    }else {
+                        fieldMapping.put(FILED_COMMENT, "");
                     }
 
                     String filed = transferFiled(fieldMapping, false);

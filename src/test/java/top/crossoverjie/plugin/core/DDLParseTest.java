@@ -4,6 +4,10 @@ import org.junit.Test;
 import top.crossoverjie.plugin.core.parse.DDLInfo;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,7 +76,13 @@ public class DDLParseTest {
     public void transfer2() throws IOException {
         String sql = "CREATE TABLE `open_api_log` (\n  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',\n  `shop_id` int(11) NOT NULL,\n  `order_id` int(11) DEFAULT NULL,\n  `data` varchar(255) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '日志',\n  `remark` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  KEY `idx_order_id` (`order_id`) USING BTREE\n) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='open_api日志表'";
         DDLParse ddlParse = new DDLParse(sql);
-        System.out.println(ddlParse.transfer()) ;
+        String transfer = ddlParse.transfer();
+        System.out.println(transfer) ;
 
+
+
+        Path path = Paths.get("/Users/chenjie/Documents/easi-document/debug/easydebug.log");
+
+        Files.write(path, transfer.getBytes(), StandardOpenOption.APPEND);	//Append mode
     }
 }
