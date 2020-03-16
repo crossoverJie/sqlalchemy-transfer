@@ -1,14 +1,10 @@
 package top.crossoverjie.plugin.listener;
 
 import com.intellij.openapi.ui.Messages;
-import com.moilioncircle.ddl.parser.TableElement;
-import top.crossoverjie.plugin.core.DDLParse;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Function:
@@ -36,14 +32,14 @@ public class ConfirmButtonListener implements ActionListener {
         System.out.println("script=" + script);
 
         try {
-            List<TableElement> tables = new DDLParse(script).tables();
-
-
-
-            for (TableElement table : tables) {
-                System.out.println(table.getTableName());
-            }
-        } catch (IOException e1) {
+//            List<TableElement> tables = new DDLParse(script).generateDDLInfo();
+//
+//
+//
+//            for (TableElement table : tables) {
+//                System.out.println(table.getTableName());
+//            }
+        } catch (Exception e1) {
             System.err.println(e1);
         }
 

@@ -16,6 +16,7 @@ public class Constants {
     public static final String TABLE_NAME = "{table_name}" ;
     public static final String FILED_NAME = "{field_name}" ;
     public static final String FILED_TYPE = "{filed_type}" ;
+    public static final String FILED_COMMENT = "{filed_comment}" ;
 
 
 
