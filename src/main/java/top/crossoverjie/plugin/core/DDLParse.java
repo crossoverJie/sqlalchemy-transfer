@@ -201,7 +201,7 @@ public class DDLParse {
                     //primary key
                     Map<String, String> fieldMapping = new HashMap<>();
                     fieldMapping.put(FILED_NAME, fieldName);
-                    fieldMapping.put(FILED_TYPE, fieldType);
+                    fieldMapping.put(FILED_TYPE, DB_TYPE_TO_PY.get(fieldType.toLowerCase()));
                     String primary = transferFiled(fieldMapping, true);
                     pyModel.append(primary);
                 } else {
