@@ -1,11 +1,10 @@
 <idea-plugin>
     <id>top.crossoverjie.opensource.sqlalchemy-transfer</id>
     <name>sqlalchemy-transfer</name>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="crossoverJie@gmail.com" url="https://crossoverjie.top">Personal</vendor>
 
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
+    A plugin that can help you transfer MySQL DDL to sqlalchemy-model.<br>
     ]]></description>
 
     <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
