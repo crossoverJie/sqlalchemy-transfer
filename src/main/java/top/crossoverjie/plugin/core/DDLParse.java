@@ -72,12 +72,12 @@ public class DDLParse {
             StandardDDLLexer lexer = new StandardDDLLexer();
             List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(script, Status.BASE_INIT, 0);
 
-            List<Integer> fi = new ArrayList<>();
+            List<Integer> fiList = new ArrayList<>();
             Map<Integer, List<StandardDDLLexer.TokenResult>> childInfoMapping = new HashMap<>(16);
             List<StandardDDLLexer.TokenResult> tokenResultList = new ArrayList<>();
             for (StandardDDLLexer.TokenResult result : tokenize) {
                 if (result.getTokenType() == DDLTokenType.FI) {
-                    fi.add(result.getPid());
+                    fiList.add(result.getPid());
                 }
 
                 if (result.status() == Status.BASE_INIT) {
@@ -94,7 +94,7 @@ public class DDLParse {
                 }
             }
 
-            for (Integer pid : fi) {
+            for (Integer pid : fiList) {
                 List<StandardDDLLexer.TokenResult> resultList = new ArrayList<>();
                 for (StandardDDLLexer.TokenResult tokenResult : tokenResultList) {
                     if (tokenResult.getPid() == pid) {
@@ -195,6 +195,7 @@ public class DDLParse {
             for (FieldInfo fieldInfo : table.getFieldInfos()) {
                 String fieldName = fieldInfo.getFieldName();
                 String fieldType = fieldInfo.getFiledType();
+                String comment = fieldInfo.getComment();
 
                 if (table.getPrimaryKey().equals(fieldName)) {
                     //primary key
@@ -208,7 +209,9 @@ public class DDLParse {
                     fieldMapping.put(FILED_NAME, fieldName);
 
                     fieldMapping.put(FILED_TYPE, DB_TYPE_TO_PY.get(fieldType.toLowerCase()));
-                    fieldMapping.put(FILED_COMMENT, fieldInfo.getComment());
+                    if (StringUtils.isNotEmpty(comment)){
+                        fieldMapping.put(FILED_COMMENT, comment);
+                    }
 
                     String filed = transferFiled(fieldMapping, false);
                     pyModel.append(filed);

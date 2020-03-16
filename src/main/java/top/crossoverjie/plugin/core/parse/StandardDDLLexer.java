@@ -139,6 +139,12 @@ public class StandardDDLLexer {
                         result.text.append(value);
                     }
                     break;
+                case K:
+                    if (value == '\n'){
+                        status = DDLTokenType.INIT;
+                    }else {
+                        result.text.append(value);
+                    }
 
                 default:
                     break;
@@ -190,7 +196,11 @@ public class StandardDDLLexer {
             result.text.append(value);
         } else if (value == '`' && pStatus == Status.BASE_FIELD_PK) {
             result.tokenType = DDLTokenType.P_K_V;
-        } else {
+        } else if (value == 'K' && pStatus == Status.BASE_INIT){
+            result.tokenType = DDLTokenType.K;
+            result.text.append(value);
+        }
+        else {
             result.tokenType = DDLTokenType.INIT;
         }
 

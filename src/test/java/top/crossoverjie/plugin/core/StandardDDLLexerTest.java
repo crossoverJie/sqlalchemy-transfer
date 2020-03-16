@@ -152,4 +152,15 @@ public class StandardDDLLexerTest {
             System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString());
         }
     }
+
+    @Test
+    public void tokenize6() throws IOException {
+        StandardDDLLexer lexer = new StandardDDLLexer();
+        String sql = "  KEY `idx_order_id` (`order_id`) USING BTREE";
+        List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_INIT, 0);
+        System.out.println("base \ttoken-type \t value \t pid");
+        for (StandardDDLLexer.TokenResult result : tokenize) {
+            System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString() + "\t" + result.getPid());
+        }
+    }
 }

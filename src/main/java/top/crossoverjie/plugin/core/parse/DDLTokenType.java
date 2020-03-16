@@ -18,5 +18,5 @@ public enum DDLTokenType {
     FIELD_COMMENT,
     P_K,
     P_K_V, //主键值
-
+    K,//普通索引
 }

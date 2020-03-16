@@ -70,7 +70,7 @@ public class DDLParseTest {
 
     @Test
     public void transfer2() throws IOException {
-        String sql = "DROP TABLE IF EXISTS `delivery_fee_plan_info`;\nCREATE TABLE `delivery_fee_plan_info` (\n`id` int(11) NOT NULL AUTO_INCREMENT,\n`city_id` int(11) NOT NULL,\n`name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT '名称',\n`start_step_fee` decimal(15,2) NOT NULL COMMENT '起步价',\n`free_distance` int(11) NOT NULL COMMENT '免费配送距离',\n`distance_unit` int(11) NOT NULL COMMENT '计算费用的最小距离单位',\n`is_deleted` int(11) NOT NULL DEFAULT 0 COMMENT '删除状态 0未删除 1删除',\n`create_time` datetime NOT NULL,\n`update_time` datetime NULL,\nPRIMARY P_K (`id`)\n)\nCOMMENT = '配送费方案基本信息表';";
+        String sql = "CREATE TABLE `open_api_log` (\n  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',\n  `shop_id` int(11) NOT NULL,\n  `order_id` int(11) DEFAULT NULL,\n  `data` varchar(255) CHARACTER SET utf8mb4 DEFAULT '' COMMENT '日志',\n  `remark` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,\n  PRIMARY KEY (`id`),\n  KEY `idx_order_id` (`order_id`) USING BTREE\n) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='open_api日志表'";
         DDLParse ddlParse = new DDLParse(sql);
         System.out.println(ddlParse.transfer()) ;
 
