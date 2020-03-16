@@ -47,6 +47,6 @@ public class ConfirmButtonListener implements ActionListener {
         }
 
 
-        Messages.showMessageDialog(filePath + "has already finished", "notify", Messages.getInformationIcon());
+        Messages.showMessageDialog(filePath + "has already finished", "Tips", Messages.getInformationIcon());
     }
 }
