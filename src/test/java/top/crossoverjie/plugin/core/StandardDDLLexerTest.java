@@ -178,4 +178,21 @@ public class StandardDDLLexerTest {
             System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString() + "\t" + result.getPid());
         }
     }
+
+    @Test
+    public void tokenize8() throws IOException {
+        StandardDDLLexer lexer = new StandardDDLLexer();
+        String sql = "CREATE TABLE `user` (\n" +
+                "  `id` int(11) NOT NULL AUTO_INCREMENT,\n" +
+                "  `userName` varchar(20) DEFAULT NULL COMMENT '用户名',\n" +
+                "  `password` varchar(100) DEFAULT NULL COMMENT '密码',\n" +
+                "  `roleId` int(11) DEFAULT NULL COMMENT '角色ID',\n" +
+                "  PRIMARY KEY (`id`),  \n" +
+                ") ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8";
+        List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_INIT, 0);
+        System.out.println("base \ttoken-type \t value \t pid");
+        for (StandardDDLLexer.TokenResult result : tokenize) {
+            System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString() + "\t" + result.getPid());
+        }
+    }
 }
