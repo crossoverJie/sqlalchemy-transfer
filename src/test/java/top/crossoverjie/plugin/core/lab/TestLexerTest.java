@@ -23,7 +23,7 @@ public class TestLexerTest {
     @Test
     public void tokenize2() throws IOException {
         TestLexer lexer = new TestLexer();
-        String script = "aaa = 10" ;
+        String script = "ab = 10" ;
         List<TestLexer.Result> tokenize = lexer.tokenize(script);
         System.out.println("token \t value");
         for (TestLexer.Result result : tokenize) {
