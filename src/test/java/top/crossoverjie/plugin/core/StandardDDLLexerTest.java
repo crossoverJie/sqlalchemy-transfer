@@ -15,33 +15,18 @@ import java.util.Map;
 
 public class StandardDDLLexerTest {
 
-    @Test
-    public void tokenize() throws IOException {
-        StandardDDLLexer lexer = new StandardDDLLexer();
-        String sql = "CREATE TABLE `open_api_terminal_info` (\n  `name` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '终端机名称',\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家终端机信息表'";
-        List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_INIT, 0);
-        System.out.println("base \ttoken-type \t value");
-        for (StandardDDLLexer.TokenResult result : tokenize) {
-            System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString());
-        }
-    }
-
-    @Test
-    public void tokenize1() throws IOException {
-        StandardDDLLexer lexer = new StandardDDLLexer();
-        String sql = "CREATE TABLE `open_api_terminal_info` (\n  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',\n  `name` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '终端机名称',\n  `clazz` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '自定义实现类',\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家终端机信息表'";
-        List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_INIT, 0);
-        System.out.println("base \ttoken-type \t value \t pid");
-        for (StandardDDLLexer.TokenResult result : tokenize) {
-            System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString() + "\t" + result.getPid());
-        }
-    }
 
     @Test
     public void tokenize100() throws IOException {
         DDLInfo ddlInfo = new DDLInfo();
         StandardDDLLexer lexer = new StandardDDLLexer();
-        String sql = "CREATE TABLE `open_api_terminal_info` (\n  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',\n  `name` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '终端机名称',\n  `clazz` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '自定义实现类',\n  PRIMARY KEY (`id`)\n) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家终端机信息表'";
+        String sql = "CREATE TABLE `user` (\n" +
+                "  `id` int(11) NOT NULL AUTO_INCREMENT,\n" +
+                "  `userName` varchar(20) DEFAULT NULL COMMENT '用户名',\n" +
+                "  `password` varchar(100) DEFAULT NULL COMMENT '密码',\n" +
+                "  `roleId` int(11) DEFAULT NULL COMMENT '角色ID',\n" +
+                "  PRIMARY KEY (`id`),  \n" +
+                ") ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8";
         List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_INIT, 0);
         System.out.println("base \ttoken-type \t value \t pid");
 
@@ -134,7 +119,7 @@ public class StandardDDLLexerTest {
     @Test
     public void tokenize3() throws IOException {
         StandardDDLLexer lexer = new StandardDDLLexer();
-        String sql = "`name` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '终端机名称'";
+        String sql = "`name` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '名称'";
         List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_FIELD_COMMENT, 0);
         System.out.println("base \ttoken-type \t value");
         for (StandardDDLLexer.TokenResult result : tokenize) {
@@ -145,7 +130,7 @@ public class StandardDDLLexerTest {
     @Test
     public void tokenize5() throws IOException {
         StandardDDLLexer lexer = new StandardDDLLexer();
-        String sql = "`name` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '终端机名称'";
+        String sql = "`name` varchar(50) CHARACTER SET utf8mb4 DEFAULT NULL COMMENT '名称'";
         List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_FIELD_LEN, 0);
         System.out.println("base \ttoken-type \t value");
         for (StandardDDLLexer.TokenResult result : tokenize) {
@@ -164,20 +149,7 @@ public class StandardDDLLexerTest {
         }
     }
 
-    @Test
-    public void tokenize7() throws IOException {
-        StandardDDLLexer lexer = new StandardDDLLexer();
-        String sql = "CREATE TABLE `open_api_terminal_info` (\n" +
-                "  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',\n" +
-                "  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,\n" +
-                "  PRIMARY KEY (`id`)\n" +
-                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='商家终端机信息表'";
-        List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_INIT, 0);
-        System.out.println("base \ttoken-type \t value \t pid");
-        for (StandardDDLLexer.TokenResult result : tokenize) {
-            System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString() + "\t" + result.getPid());
-        }
-    }
+
 
     @Test
     public void tokenize8() throws IOException {
