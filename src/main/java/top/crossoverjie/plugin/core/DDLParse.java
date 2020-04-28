@@ -12,11 +12,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import static top.crossoverjie.plugin.core.Constants.CLASS_NAME;
 import static top.crossoverjie.plugin.core.Constants.DB_TYPE_TO_PY;
 import static top.crossoverjie.plugin.core.Constants.FILED_COMMENT;
+import static top.crossoverjie.plugin.core.Constants.FILED_LEN;
 import static top.crossoverjie.plugin.core.Constants.FILED_NAME;
 import static top.crossoverjie.plugin.core.Constants.FILED_TYPE;
 import static top.crossoverjie.plugin.core.Constants.TABLE_NAME;
@@ -35,7 +35,7 @@ public class DDLParse {
 
     private String primaryFieldTemplate = "    " + FILED_NAME + " = db.Column(db." + FILED_TYPE + ", primary_key=True, autoincrement=True" + ")\n";
 
-    private String fieldTemplate = "    " + FILED_NAME + " = db.Column(db." + FILED_TYPE + ")  # " + FILED_COMMENT + "\n";
+    private String fieldTemplate = "    " + FILED_NAME + " = db.Column(db." + FILED_TYPE + FILED_LEN + ")  # " + FILED_COMMENT + "\n";
 
     private String sql;
 
@@ -144,6 +144,12 @@ public class DDLParse {
         return metaTemplate;
     }
 
+    /**
+     * Generate final String by using model
+     * @param mapping
+     * @param primary
+     * @return
+     */
     public String transferFiled(Map<String, String> mapping, boolean primary) {
 
         String template = fieldTemplate;
@@ -208,6 +214,13 @@ public class DDLParse {
                     Map<String, String> fieldMapping = new HashMap<>();
                     fieldMapping.put(FILED_NAME, fieldName);
 
+                    // only varchar need length create_time = db.Column(db.String(20))
+                    if (fieldType.equals("varchar")){
+                        fieldMapping.put(FILED_LEN, "(" + fieldInfo.getFieldLen() + ")");
+                    }else {
+                        fieldMapping.put(FILED_LEN, "");
+                    }
+
                     fieldMapping.put(FILED_TYPE, DB_TYPE_TO_PY.get(fieldType.toLowerCase()));
                     if (StringUtils.isNotEmpty(comment)){
                         fieldMapping.put(FILED_COMMENT, comment);
@@ -227,16 +240,4 @@ public class DDLParse {
         return pyModel.toString();
     }
 
-    Pattern compile = Pattern.compile("[^0-9]");
-
-    private String getFieldLength(String fileName) {
-        for (String str : sql.split(",")) {
-            if (str.contains(fileName)) {
-                String result = compile.matcher(str).replaceAll("");
-                return result;
-            }
-        }
-
-        return "";
-    }
 }

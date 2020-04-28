@@ -22,7 +22,7 @@ public class StandardDDLLexer {
 
     public List<TokenResult> tokenize(String script, Status pStatus, int pid) throws IOException {
 
-        CharArrayReader reader = new CharArrayReader(script.toCharArray());
+        CharArrayReader reader = new CustomCharArrayReader(script.toCharArray());
         DDLTokenType status = DDLTokenType.INIT;
         int ch;
         char value;
@@ -55,7 +55,7 @@ public class StandardDDLLexer {
                     }
                     break;
                 case FI:
-                    if (value == ',') {
+                    if (value == ',' && ((CustomCharArrayReader) reader).preReadNext() == '\n') {
                         status = DDLTokenType.INIT;
                         result.pid = nextPid() ;
 
@@ -295,6 +295,21 @@ public class StandardDDLLexer {
         @Override
         public String toString() {
             return this.text.toString();
+        }
+    }
+
+    public static class CustomCharArrayReader extends CharArrayReader {
+        public CustomCharArrayReader(char[] buf) {
+            super(buf);
+        }
+
+        /**
+         * Prepare read next one.
+         * @return
+         */
+        public int preReadNext(){
+            int index = pos;
+            return buf[index++];
         }
     }
     
