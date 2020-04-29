@@ -1,17 +1,22 @@
 <idea-plugin>
     <id>top.crossoverjie.opensource.sqlalchemy-transfer</id>
     <name>sqlalchemy-transfer</name>
-    <vendor email="crossoverJie@gmail.com" url="https://crossoverjie.top">Personal</vendor>
-
+    <vendor email="crossoverJie@gmail.com" url="https://github.com/crossoverJie/sqlalchemy-transfer">crossoverJie</vendor>
+    <category>Code Tools</category>
     <description><![CDATA[
     A plugin that can help you transfer MySQL DDL to sqlalchemy-model.<br>
     ]]></description>
 
-    <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
-    -->
+    <description><![CDATA[
+<div>
+    <h1>A plugin that can help you transfer MySQL DDL to sqlalchemy-model.</h1>
+    <div>
+
+        <p> For more information please visit: <a href="https://github.com/crossoverJie/sqlalchemy-transfer">GitHub</a></p>
+    </div>
+</div>
+    ]]></description>
+
 
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
