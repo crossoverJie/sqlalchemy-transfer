@@ -2,10 +2,6 @@
     <id>top.crossoverjie.opensource.sqlalchemy-transfer</id>
     <name>sqlalchemy-transfer</name>
     <vendor email="crossoverJie@gmail.com" url="https://github.com/crossoverJie/sqlalchemy-transfer">crossoverJie</vendor>
-    <category>Code Tools</category>
-    <description><![CDATA[
-    A plugin that can help you transfer MySQL DDL to sqlalchemy-model.<br>
-    ]]></description>
 
     <description><![CDATA[
 <div>
