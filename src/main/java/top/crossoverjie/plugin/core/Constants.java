@@ -25,6 +25,7 @@ public class Constants {
     static {
         DB_TYPE_TO_PY.put("varchar", "String") ;
         DB_TYPE_TO_PY.put("int", "Integer") ;
+        DB_TYPE_TO_PY.put("bigint", "Integer") ;
         DB_TYPE_TO_PY.put("datetime", "DateTime") ;
         DB_TYPE_TO_PY.put("decimal", "Float") ;
     }

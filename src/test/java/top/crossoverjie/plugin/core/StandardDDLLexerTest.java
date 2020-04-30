@@ -195,10 +195,46 @@ public class StandardDDLLexerTest {
         System.out.println(transfer);
     }
 
+    @Test
+    public void tokenize11() throws IOException {
+        StandardDDLLexer lexer = new StandardDDLLexer();
+        String sql = "CREATE TABLE `xx_fee` (\n" +
+                "  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,\n" +
+                "  `xx4_status` varchar(64) NOT NULL COMMENT '我 HH 态',\n" +
+                "  PRIMARY KEY (`id`)\n" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='xx表';";
+        List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_INIT, 0);
+        System.out.println("base \ttoken-type \t value \t pid");
+        for (StandardDDLLexer.TokenResult result : tokenize) {
+            System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString() + "\t" + result.getPid());
+        }
+
+        String transfer = new DDLParse(sql).transfer();
+        System.out.println(transfer);
+    }
+
+    @Test
+    public void tokenize12() throws IOException {
+        StandardDDLLexer lexer = new StandardDDLLexer();
+        String sql = "CREATE TABLE `xx_fee` (\n" +
+                "  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,\n" +
+                "  `xx4_status` varchar(64) NOT NULL COMMENT '时间，多个用（|）分割',\n" +
+                "  PRIMARY KEY (`id`)\n" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='xx表';";
+        List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_INIT, 0);
+        System.out.println("base \ttoken-type \t value \t pid");
+        for (StandardDDLLexer.TokenResult result : tokenize) {
+            System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString() + "\t" + result.getPid());
+        }
+
+        String transfer = new DDLParse(sql).transfer();
+        System.out.println(transfer);
+    }
+
 
     @Test
     public void str() throws IOException {
-        String sql = "CREATE TABLE `xxx_fee" ;
+        String sql = "`xx4_status` varchar(64) NOT NULL COMMENT '我 HH 态'" ;
         CharArrayReader reader = new StandardDDLLexer.CustomCharArrayReader(sql.toCharArray());
         int pre = ((StandardDDLLexer.CustomCharArrayReader) reader).preReadNext();
         System.out.println((char) pre);
@@ -207,6 +243,9 @@ public class StandardDDLLexerTest {
         while ((ch = reader.read()) != -1) {
             value = (char) ch;
             System.out.println((char) ch);
+            if (value == 'v'){
+                System.out.println("=====" + (char)((StandardDDLLexer.CustomCharArrayReader) reader).frontRead(2));
+            }
         }
 
 

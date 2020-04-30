@@ -31,7 +31,7 @@ public class StandardDDLLexer {
             value = (char) ch;
             switch (status) {
                 case INIT:
-                    result = initToken(value, result, pStatus);
+                    result = initToken(value, result, pStatus, reader);
                     status = result.tokenType;
                     break;
                 case CT:
@@ -171,7 +171,7 @@ public class StandardDDLLexer {
      * @param pStatus 用于递归校验状态
      * @return
      */
-    private TokenResult initToken(char value, TokenResult result, Status pStatus) {
+    private TokenResult initToken(char value, TokenResult result, Status pStatus, CharArrayReader reader) {
 
         //再次调用初始化的时候一定是状态转移后，说明可以写入一个完整的数据了。
         if (result.getText().length() > 0) {
@@ -189,7 +189,8 @@ public class StandardDDLLexer {
             result.tokenType = DDLTokenType.TBN;
         } else if (value == '`' && pStatus == Status.BASE_FIELD_NAME) {
             result.tokenType = DDLTokenType.FIELD_NAME;
-        } else if (value == ' ' && pStatus == Status.BASE_FIELD_TYPE) {
+        } else if (value == ' ' && pStatus == Status.BASE_FIELD_TYPE && ((CustomCharArrayReader) reader).frontRead(2) == '`') {
+            // xx4_status` varchar(64) NOT NULL COMMENT '我 HH 态' 必须得满足是空格开始，前面三位是 `
             result.tokenType = DDLTokenType.FIELD_TYPE;
             result.text.append(value);
         } else if (value == '(' && pStatus == Status.BASE_FIELD_LEN) {
@@ -310,6 +311,17 @@ public class StandardDDLLexer {
         public int preReadNext(){
             int index = pos;
             return buf[index++];
+        }
+
+        /**
+         * Read value front
+         * @param step
+         * @return
+         */
+        public int frontRead(int step){
+            int index = pos;
+            index = index - step ;
+            return buf[index] ;
         }
     }
     

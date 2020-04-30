@@ -44,9 +44,10 @@ public class ConfirmButtonListener implements ActionListener {
 
         } catch (Exception e1) {
             System.err.println(e1);
+            Messages.showMessageDialog("Generate failure, https://github.com/crossoverJie/sqlalchemy-transfer/issues/new", "Tips", Messages.getInformationIcon());
         }
 
 
-        Messages.showMessageDialog(filePath + "has already finished", "Tips", Messages.getInformationIcon());
+        Messages.showMessageDialog(filePath + " has already finished", "Tips", Messages.getInformationIcon());
     }
 }
