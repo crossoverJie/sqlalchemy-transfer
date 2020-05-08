@@ -231,6 +231,31 @@ public class StandardDDLLexerTest {
         System.out.println(transfer);
     }
 
+    @Test
+    public void tokenize13() throws IOException {
+        StandardDDLLexer lexer = new StandardDDLLexer();
+        String sql = "CREATE TABLE `table1` (\n" +
+                "  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',\n" +
+                "  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,\n" +
+                "  `update_time` datetime NULL,\n" +
+                "  PRIMARY KEY (`id`),\n" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='table1';\n" +
+                "\n" +
+                "CREATE TABLE `table2` (\n" +
+                "  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '自增ID',\n" +
+                "  `name` varchar(20) CHARACTER SET utf8mb4 NOT NULL COMMENT '名称',\n" +
+                "  PRIMARY KEY (`id`),\n" +
+                ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='table2';";
+        List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_INIT, 0);
+        System.out.println("base \ttoken-type \t value \t pid");
+        for (StandardDDLLexer.TokenResult result : tokenize) {
+            System.out.println(result.status() + "\t" + result.getTokenType() + "\t" + result.getText().toString() + "\t" + result.getPid());
+        }
+
+        String transfer = new DDLParse(sql).transfer();
+        System.out.println(transfer);
+    }
+
 
     @Test
     public void str() throws IOException {

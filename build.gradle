@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'top.crossoverjie.opensource'
-version '1.0.1-SNAPSHOT'
+version '1.0.2-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -22,11 +22,17 @@ intellij {
 }
 patchPluginXml {
     changeNotes """
+       <div>
+          <p>1.0.2</p>
+            <ul> 
+                <li>fix a bug about muilt tables pares.</li> 
+            </ul>   
+      </div>
       <div>
-      <p>1.0.1</p>
-        <ul> 
-            <li>fix bug</li> 
-        </ul>   
+          <p>1.0.1</p>
+            <ul> 
+                <li>fix bug</li> 
+            </ul>   
       </div>
       """
 }

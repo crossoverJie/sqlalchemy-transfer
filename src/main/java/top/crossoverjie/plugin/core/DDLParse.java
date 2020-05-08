@@ -138,6 +138,8 @@ public class DDLParse {
     }
 
     public String transferMeta(Map<String, String> mapping) {
+        String metaTemplate = "class " + CLASS_NAME + "(db.Model):\n" +
+                "    __tablename__ = '" + TABLE_NAME + "'\n";
         for (Map.Entry<String, String> entry : mapping.entrySet()) {
             metaTemplate = metaTemplate.replace(entry.getKey(), entry.getValue());
         }
