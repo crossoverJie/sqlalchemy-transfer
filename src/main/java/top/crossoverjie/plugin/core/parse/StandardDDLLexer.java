@@ -100,6 +100,8 @@ public class StandardDDLLexer {
                         result.pid = pid ;
                     }
                     else {
+                        // 将字段类型全部转换为小写
+                        value = Character.toLowerCase(value) ;
                         if (isNotFieldType(value)) {
                             status = DDLTokenType.INIT;
                         } else {
