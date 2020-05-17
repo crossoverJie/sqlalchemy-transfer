@@ -18,9 +18,11 @@ dependencies {
 }
 
 intellij {
-    version 'IC-2019.1.3'
+    version '2018.1.2'
 }
 patchPluginXml {
+    sinceBuild '181.0'
+    untilBuild '201.*'
     changeNotes """
        <div>
           <p>1.0.3</p>
