@@ -8,8 +8,8 @@ A plugin that can help you transfer `MySQL DDL` to `sqlalchemy-model`.
 
 ![](pic/install.jpg)
 
-[plugin market](https://plugins.jetbrains.com/plugin/14219-sqlalchemy-transfer/)
-
+- [plugin market](https://plugins.jetbrains.com/plugin/14219-sqlalchemy-transfer/)
+- [Manual installation](https://github.com/crossoverJie/sqlalchemy-transfer/releases)
 
 # Waring:
 
