@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'top.crossoverjie.opensource'
-version '1.0.3-SNAPSHOT'
+version '1.0.4-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -24,6 +24,12 @@ patchPluginXml {
     sinceBuild '181.0'
     untilBuild '201.*'
     changeNotes """
+       <div>
+          <p>1.0.4</p>
+            <ul> 
+                <li>Compatible with char</li> 
+            </ul>   
+      </div>        
        <div>
           <p>1.0.3</p>
             <ul> 

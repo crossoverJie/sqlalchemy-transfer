@@ -24,6 +24,7 @@ public class Constants {
     public static final Map<String,String> DB_TYPE_TO_PY = new HashMap<>() ;
     static {
         DB_TYPE_TO_PY.put("varchar", "String") ;
+        DB_TYPE_TO_PY.put("char", "String") ;
         DB_TYPE_TO_PY.put("int", "Integer") ;
         DB_TYPE_TO_PY.put("tinyint", "Integer") ;
         DB_TYPE_TO_PY.put("text", "Text") ;

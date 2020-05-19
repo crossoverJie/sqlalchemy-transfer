@@ -216,8 +216,8 @@ public class DDLParse {
                     Map<String, String> fieldMapping = new HashMap<>();
                     fieldMapping.put(FILED_NAME, fieldName);
 
-                    // only varchar need length create_time = db.Column(db.String(20))
-                    if (fieldType.equals("varchar")){
+                    // only varchar/char need length create_time = db.Column(db.String(20))
+                    if (fieldIsString(fieldType)){
                         fieldMapping.put(FILED_LEN, "(" + fieldInfo.getFieldLen() + ")");
                     }else {
                         fieldMapping.put(FILED_LEN, "");
@@ -240,6 +240,23 @@ public class DDLParse {
         }
 
         return pyModel.toString();
+    }
+
+    /**
+     * Check if it is a string
+     * @param fieldType current filed type
+     * @return
+     */
+    private boolean fieldIsString(String fieldType){
+        for (Map.Entry<String, String> entry : DB_TYPE_TO_PY.entrySet()) {
+            if (!entry.getValue().equals("String")){
+                continue;
+            }
+            if (fieldType.equals(entry.getKey())){
+                return true ;
+            }
+        }
+        return false ;
     }
 
 }
