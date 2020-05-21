@@ -262,6 +262,8 @@ public class StandardDDLLexerTest {
         String sql = "CREATE TABLE `t` (\n" +
                 "  `id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,\n" +
                 "  PRIMARY KEY (`id`),\n" +
+                "  `big_data` mediumtext COLLATE utf8mb4_unicode_ci COMMENT '日志',\n" +
+                "  `big_data2` text COLLATE utf8mb4_unicode_ci COMMENT '日志',\n" +
                 ") ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='table1';\n" ;
         List<StandardDDLLexer.TokenResult> tokenize = lexer.tokenize(sql, Status.BASE_INIT, 0);
         System.out.println("base \ttoken-type \t value \t pid");

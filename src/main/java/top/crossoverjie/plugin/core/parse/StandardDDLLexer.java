@@ -221,7 +221,7 @@ public class StandardDDLLexer {
     /**
      * 不属于 fieldType 的字符，NOT NULL AUTO_INCREMENT COMMENT SET utf8mb4 DEFAULT NULL COMMENT
      */
-    private String notFieldType = "' N A C S u D";
+    private String notFieldType = "' N A C S D";
 
     private boolean isNotFieldType(char value) {
         for (char c : notFieldType.trim().toCharArray()) {

@@ -28,6 +28,7 @@ public class Constants {
         DB_TYPE_TO_PY.put("int", "Integer") ;
         DB_TYPE_TO_PY.put("tinyint", "Integer") ;
         DB_TYPE_TO_PY.put("text", "Text") ;
+        DB_TYPE_TO_PY.put("mediumtext", "Text") ;
         DB_TYPE_TO_PY.put("smallint", "Integer") ;
         DB_TYPE_TO_PY.put("bigint", "Integer") ;
         DB_TYPE_TO_PY.put("datetime", "DateTime") ;
