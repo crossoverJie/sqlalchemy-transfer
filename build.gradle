@@ -25,6 +25,12 @@ patchPluginXml {
     untilBuild '201.*'
     changeNotes """
        <div>
+          <p>1.0.6</p>
+            <ul> 
+                <li>option decimal support</li> 
+            </ul>   
+      </div>  
+       <div>
           <p>1.0.5</p>
             <ul> 
                 <li>Compatible with mediumtext</li> 
