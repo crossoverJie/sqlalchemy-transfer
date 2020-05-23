@@ -15,6 +15,7 @@ import java.util.Map;
 
 import static top.crossoverjie.plugin.core.Constants.CLASS_NAME;
 import static top.crossoverjie.plugin.core.Constants.DB_TYPE_TO_PY;
+import static top.crossoverjie.plugin.core.Constants.DECIMAL_MAPPING;
 import static top.crossoverjie.plugin.core.Constants.FILED_COMMENT;
 import static top.crossoverjie.plugin.core.Constants.FILED_LEN;
 import static top.crossoverjie.plugin.core.Constants.FILED_NAME;
@@ -216,14 +217,23 @@ public class DDLParse {
                     Map<String, String> fieldMapping = new HashMap<>();
                     fieldMapping.put(FILED_NAME, fieldName);
 
-                    // only varchar/char need length create_time = db.Column(db.String(20))
-                    if (fieldIsString(fieldType)){
+                    if (isFieldNeedToDecimal(fieldType)){
+                        // decimal and selected decimal checkbox
                         fieldMapping.put(FILED_LEN, "(" + fieldInfo.getFieldLen() + ")");
+                        fieldMapping.put(FILED_TYPE, DECIMAL_MAPPING.get(fieldType.toLowerCase()));
                     }else {
-                        fieldMapping.put(FILED_LEN, "");
+                        // common field
+                        // only varchar/char need length create_time = db.Column(db.String(20))
+                        if (isFieldString(fieldType)){
+                            fieldMapping.put(FILED_LEN, "(" + fieldInfo.getFieldLen() + ")");
+                        }else {
+                            fieldMapping.put(FILED_LEN, "");
+                        }
+
+                        fieldMapping.put(FILED_TYPE, DB_TYPE_TO_PY.get(fieldType.toLowerCase()));
                     }
 
-                    fieldMapping.put(FILED_TYPE, DB_TYPE_TO_PY.get(fieldType.toLowerCase()));
+
                     if (StringUtils.isNotEmpty(comment)){
                         fieldMapping.put(FILED_COMMENT, comment);
                     }else {
@@ -247,7 +257,7 @@ public class DDLParse {
      * @param fieldType current filed type
      * @return
      */
-    private boolean fieldIsString(String fieldType){
+    private boolean isFieldString(String fieldType){
         for (Map.Entry<String, String> entry : DB_TYPE_TO_PY.entrySet()) {
             if (!entry.getValue().equals("String")){
                 continue;
@@ -255,6 +265,18 @@ public class DDLParse {
             if (fieldType.equals(entry.getKey())){
                 return true ;
             }
+        }
+        return false ;
+    }
+
+    /**
+     * check filed need to transfer db.DECIMAL(15, 2)
+     * @param fieldType
+     * @return
+     */
+    private boolean isFieldNeedToDecimal(String fieldType){
+        if (ThreadLocalHolder.getDecimal() && fieldType.equals("decimal")){
+            return true ;
         }
         return false ;
     }

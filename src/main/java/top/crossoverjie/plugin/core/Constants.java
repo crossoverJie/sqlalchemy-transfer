@@ -22,6 +22,7 @@ public class Constants {
 
 
     public static final Map<String,String> DB_TYPE_TO_PY = new HashMap<>() ;
+    public static final Map<String,String> DECIMAL_MAPPING = new HashMap<>() ;
     static {
         DB_TYPE_TO_PY.put("varchar", "String") ;
         DB_TYPE_TO_PY.put("char", "String") ;
@@ -33,5 +34,7 @@ public class Constants {
         DB_TYPE_TO_PY.put("bigint", "Integer") ;
         DB_TYPE_TO_PY.put("datetime", "DateTime") ;
         DB_TYPE_TO_PY.put("decimal", "Float") ;
+
+        DECIMAL_MAPPING.put("decimal", "DECIMAL") ;
     }
 }

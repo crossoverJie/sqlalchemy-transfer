@@ -19,12 +19,13 @@ public class MainWindow {
     private JTextField inputFileTextField;
     private JButton chooseFileButton;
     private JButton confirmButton;
+    private JCheckBox decimalCheckBox;
 
 
     public MainWindow(ToolWindow toolWindow) {
 
         chooseFileButton.addActionListener(new ChooseFileButtonListener(inputFileTextField));
-        confirmButton.addActionListener(new ConfirmButtonListener(inputFileTextField, scriptTextArea));
+        confirmButton.addActionListener(new ConfirmButtonListener(inputFileTextField, scriptTextArea, decimalCheckBox));
     }
 
     public JPanel getContent() {

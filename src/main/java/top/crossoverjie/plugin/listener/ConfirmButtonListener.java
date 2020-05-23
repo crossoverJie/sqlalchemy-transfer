@@ -2,6 +2,7 @@ package top.crossoverjie.plugin.listener;
 
 import com.intellij.openapi.ui.Messages;
 import top.crossoverjie.plugin.core.DDLParse;
+import top.crossoverjie.plugin.core.ThreadLocalHolder;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -25,10 +26,12 @@ public class ConfirmButtonListener implements ActionListener {
 
     private JTextField inputFileTextField;
     private JTextArea scriptTextArea;
+    private JCheckBox decimalCheckBox;
 
-    public ConfirmButtonListener(JTextField inputFileTextField, JTextArea scriptTextArea) {
+    public ConfirmButtonListener(JTextField inputFileTextField, JTextArea scriptTextArea, JCheckBox decimalCheckBox) {
         this.inputFileTextField = inputFileTextField;
         this.scriptTextArea = scriptTextArea;
+        this.decimalCheckBox = decimalCheckBox;
     }
 
     @Override
@@ -38,6 +41,12 @@ public class ConfirmButtonListener implements ActionListener {
 
         System.out.println("path=" + filePath);
         System.out.println("script=" + script);
+        boolean selected = decimalCheckBox.isSelected();
+        System.out.println("checked=" + selected);
+        if (selected){
+            Messages.showMessageDialog("decimal will be transform to (db.DECIMAL(15, 2)", "Tips", Messages.getInformationIcon());
+        }
+        ThreadLocalHolder.setDecimal(selected);
 
         try {
             String transfer = new DDLParse(script).transfer();
@@ -58,6 +67,8 @@ public class ConfirmButtonListener implements ActionListener {
             Messages.showMessageDialog("Generate failure, https://github.com/crossoverJie/sqlalchemy-transfer/issues/new", "Tips", Messages.getInformationIcon());
 
 
+        }finally {
+            ThreadLocalHolder.removeDecimal();
         }
 
 
