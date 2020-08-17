@@ -2,6 +2,8 @@
 
 A plugin that can help you transfer `MySQL DDL` to `sqlalchemy-model`.
 
+<iframe frameborder="none" width="245px" height="48px" src="https://plugins.jetbrains.com/embeddable/install/14219"></iframe>
+
 ![](pic/1.gif)
 
 # Installation
